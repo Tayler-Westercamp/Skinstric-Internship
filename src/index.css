@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Roobert';
+  src: url('/fonts/Roobert-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roobert-font {
+    @apply font-roobert text-eerie;
+}
+
+.h1-home {
+    @apply text-[128px] font-light tracking-[-0.07em] text-center leading-[120px];
+}
