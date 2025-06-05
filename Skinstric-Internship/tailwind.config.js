@@ -23,9 +23,19 @@ export default {
           '0%': { opacity: '0.2', transform: 'scale(1)' },
           '100%': { opacity: '1', transform: 'scale(1.3)' },
         },
+        rotateClockwise: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        rotateCounterClockwise: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(-360deg)' },
+        },
       },
       animation: {
         dotFlash: 'dotFlash 1s infinite alternate',
+        spinSlow: 'rotateClockwise 20s linear infinite',
+        spinSlowReverse: 'rotateCounterClockwise 20s linear infinite',
       },
     },
   },

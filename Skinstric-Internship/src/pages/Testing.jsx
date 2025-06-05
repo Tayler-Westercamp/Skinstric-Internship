@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ArrowButton from "../assets/ArrowButton.png";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
 
 const Testing = () => {
   const [userName, setUserName] = useState("");
@@ -67,15 +68,21 @@ const Testing = () => {
     }
   };
 
+  useEffect(() => {
+  gsap.to("#square1", { rotation: 360, repeat: -1, duration: 120, ease: "linear"});
+  gsap.to("#square2", { rotation: 360, repeat: -1, duration: 140, ease: "linear", delay: 1});
+  gsap.to("#square3", { rotation: 360, repeat: -1, duration: 160, ease: "linear", delay: 2});
+}, []);
+
   return (
     <div className="flex items-center justify-center">
       <div className="absolute left-[32px] top-[86px]">
         <p className="roobert-font font-bold">TO START ANALYSIS</p>
       </div>
       <div className="relative h-[762px] w-[762px] flex items-center justify-center">
-        <div className="w-[425px] h-[425px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 top-[calc(50%+24px)] left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
-        <div className="w-[482px] h-[482px] border-2 border-dotted border-bluegray-60 absolute rotate-45 z-0 top-[calc(50%+24px)] left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="w-[538px] h-[538px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 top-[calc(50%+24px)] left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div id="square1" className="w-[425px] h-[425px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 top-[calc(50%+24px)] left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
+        <div id="square2" className="w-[482px] h-[482px] border-2 border-dotted border-bluegray-60 absolute rotate-45 z-0 top-[calc(50%+24px)] left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div id="square3" className="w-[538px] h-[538px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 top-[calc(50%+24px)] left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
 
         {dataEntered ? (
           <div className=" flex justify-center items-center flex-col">
