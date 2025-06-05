@@ -1,11 +1,120 @@
-import { useEffect, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import ArrowButton from "../assets/ArrowButton.png";
 import { Link } from "react-router-dom";
 import camera from "../assets/camera.png";
 import gallery from "../assets/gallery.png";
-import resultline from "../assets/resultline.png"
+import resultline from "../assets/resultline.png";
+import gsap from "gsap";
 
 const Result = () => {
+  const [selectedFile, setSelectedFile] = useState("");
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedFile !== "") {
+      uploadIMG();
+    }
+  }, [selectedFile]);
+
+  const uploadIMG = async () => {
+    if (!selectedFile) {
+      alert("Please select a file first!");
+      return;
+    }
+
+    const data = {
+      image: selectedFile,
+    };
+
+    try {
+      const response = await fetch(
+        "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Upload success:", result);
+      } else {
+        alert("Your input could not be processed. Please try again.");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+      alert("There has been an error. Please try again.");
+      window.location.reload();
+    }
+  };
+
+  const handleImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result.split(",")[1];
+        console.log("Base64 Encoded:", base64String);
+        setSelectedFile(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  useEffect(() => {
+    gsap.to("#square1", {
+      rotation: 360,
+      repeat: -1,
+      duration: 120,
+      ease: "linear",
+    });
+    gsap.to("#square2", {
+      rotation: 360,
+      repeat: -1,
+      duration: 140,
+      ease: "linear",
+      delay: 1,
+    });
+    gsap.to("#square3", {
+      rotation: 360,
+      repeat: -1,
+      duration: 160,
+      ease: "linear",
+      delay: 2,
+    });
+    gsap.to("#square4", {
+      rotation: -360,
+      repeat: -1,
+      duration: 120,
+      ease: "linear",
+    });
+    gsap.to("#square5", {
+      rotation: -360,
+      repeat: -1,
+      duration: 140,
+      ease: "linear",
+      delay: 1,
+    });
+    gsap.to("#square6", {
+      rotation: -360,
+      repeat: -1,
+      duration: 160,
+      ease: "linear",
+      delay: 2,
+    });
+  }, []);
+
+
   return (
     <div className="flex items-center justify-center  h-[calc(100vh-64px)]">
       <div className="flex items-center justify-around w-[100vw]">
@@ -13,37 +122,49 @@ const Result = () => {
           <p className="roobert-font font-bold">TO START ANALYSIS</p>
         </div>
         <div className="w-[482px] h-[482px] flex items-center justify-center relative">
-            <div className="absolute top-[140px] right-[138px]">
-                <img src={resultline} alt="" className="rotate-180" />
-            </div>
+          <div className="absolute top-[140px] right-[138px]">
+            <img src={resultline} alt="" className="rotate-180" />
+          </div>
           <div className="absolute top-[125px] right-[-16px]">
             ALLOW A.I. <br /> TO SCAN YOUR FACE
           </div>
-          <div className="w-[286.64px] h-[286.64px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
-          <div className="w-[314.28px] h-[314.28px] border-2 border-dotted border-bluegray-60 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="w-[340.75px] h-[340.75px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+          <div id="square1" className="w-[286.64px] h-[286.64px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
+          <div id="square2" className="w-[314.28px] h-[314.28px] border-2 border-dotted border-bluegray-60 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+          <div id="square3" className="w-[340.75px] h-[340.75px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
           <div className="w-[136px] h-[136px] z-10">
-            <Link to={'/'}>
-          <img src={camera} alt="" className="w-full h-full hover:scale-105 transition-transform duration-300 cursor-pointer z-10" />
-          </Link>
+            <Link to={"/"}>
+              <img
+                src={camera}
+                alt=""
+                className="w-full h-full hover:scale-105 transition-transform duration-300 cursor-pointer z-10"
+              />
+            </Link>
           </div>
-          
-          
         </div>
         <div className="w-[482px] h-[482px] flex items-center justify-center relative">
-            <div className="absolute bottom-[135px] left-[145px]">
-                <img src={resultline} alt="" />
-            </div>
+          <div className="absolute bottom-[135px] left-[145px]">
+            <img src={resultline} alt="" />
+          </div>
           <div className="absolute bottom-[100px] left-[12px] text-right">
             ALLOW A.I. <br /> ACCESS GALLERY
           </div>
-          <div className="w-[286.64px] h-[286.64px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
-          <div className="w-[314.28px] h-[314.28px] border-2 border-dotted border-bluegray-60 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="w-[340.75px] h-[340.75px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+          <div id="square4" className="w-[286.64px] h-[286.64px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
+          <div id="square5" className="w-[314.28px] h-[314.28px] border-2 border-dotted border-bluegray-60 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+          <div id="square6" className="w-[340.75px] h-[340.75px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
           <div className="w-[136px] h-[136px] z-10">
-            <Link to={'/'}>
-          <img src={gallery} alt="" className="w-full h-full hover:scale-105 transition-transform duration-300 cursor-pointer z-10" />
-          </Link>
+            <img
+              src={gallery}
+              alt="Gallery icon"
+              onClick={handleImageClick}
+              className="w-full h-full hover:scale-105 transition-transform duration-300 cursor-pointer z-10"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+            />
           </div>
         </div>
         <div className="flex justify-between items-center absolute bottom-[32px] left-[32px] w-[97px] h-[44px]">
