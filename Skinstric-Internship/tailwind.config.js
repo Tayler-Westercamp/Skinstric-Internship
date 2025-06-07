@@ -17,6 +17,10 @@ export default {
           60: 'rgba(160, 164, 171, 0.6)',
           40: 'rgba(160, 164, 171, 0.4)',
         },
+        lotion: {
+          DEFAULT: "#FCFCFC",
+          hover: "#E1E1E2",
+        },
       },
        keyframes: {
         dotFlash: {
