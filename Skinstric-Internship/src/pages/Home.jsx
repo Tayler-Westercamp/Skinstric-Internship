@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import ArrowButton from "../assets/ArrowButton.png";
+import Arrow from "../assets/Polygon.png";
 import { useEffect } from "react";
 import gsap from "gsap";
 
@@ -34,6 +35,22 @@ const Home = () => {
         delay: 0.1,
       });
 
+      gsap.to("#square1", {
+        scale: 1.2,
+        duration: 1,
+        ease: "power2.out",
+      });
+      gsap.to("#square2", {
+        scale: 1.4,
+        duration: 1.5,
+        ease: "power2.out",
+      });
+      gsap.to("#square3", {
+        scale: 1.6,
+        duration: 1.8,
+        ease: "power2.out",
+      });
+
       gsap.to("#discoverAI", {
         opacity: 0,
         duration: 0.5,
@@ -60,6 +77,23 @@ const Home = () => {
           gsap.set("#discoverAI", { pointerEvents: "auto" });
         },
       });
+      gsap.to("#square1", {
+        scale: 1,
+        duration: 0.5,
+        ease: "power2.out",
+      });
+      gsap.to("#square2", {
+        scale: 1,
+        duration: 0.5,
+        ease: "power2.out",
+        delay: 0.1,
+      });
+      gsap.to("#square3", {
+        scale: 1,
+        duration: 0.5,
+        ease: "power2.out",
+        delay: 0.2,
+      });
     };
 
     trigger.addEventListener("mouseenter", handleMouseEnter);
@@ -78,12 +112,12 @@ const Home = () => {
           id="discoverAI"
           className="flex items-center w-[150px] justify-between ml-[32px] relative"
         >
-          <div className="w-[602px] h-[602px] border-2 border-dotted border-bluegray absolute transform -translate-x-[75%] rotate-45"></div>
+          <div className="w-[425px] h-[425px] border-2 border-dotted border-bluegray absolute transform -translate-x-[75%] rotate-45"></div>
           <div className="w-[44px] h-[44px] relative z-10">
             <img
               src={ArrowButton}
               alt="Arrow button"
-              className="w-full h-full object-cover transform -scale-x-100 hover:[transform:scale(1.10)_scaleX(-1)] transition-transform duration-300 cursor-pointer"
+              className="w-full h-full object-cover transform -scale-x-100 hover:[transform:scale(1.10)_scaleX(-1)] transition-transform duration-300 cursor-not-allowed"
             />
           </div>
           <p className="roobert-font text-[14px]">DISCOVER A.I.</p>
@@ -102,14 +136,27 @@ const Home = () => {
           id="arrowTrigger"
           className="flex items-center w-[127px] justify-between mr-[32px] relative"
         >
-          <div className="w-[602px] h-[602px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 "></div>
-          <p className="roobert-font text-[14px]">TAKE TEST</p>
+        
+          <div
+            id="square1"
+            className="w-[425px] h-[425px] border-2 border-dotted border-bluegray absolute rotate-45 z-0 "
+          ></div>
+          <div
+            id="square2"
+            className="w-[425px] h-[425px] border-2 border-dotted border-bluegray-60 absolute rotate-45 z-0 "
+          ></div>
+          <div
+            id="square3"
+            className="w-[425px] h-[425px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 "
+          ></div>
+          <p className="roobert-font text-[14px] mr-3">TAKE TEST</p>
           <Link to={"/testing"}>
-            <div  className="w-[44px] h-[44px] relative z-10">
+            <div className="w-[31px] h-[31px] relative z-10 flex justify-center items-center rotate-45 border-[1px] border-black hover:scale-125 transition-transform duration-300 cursor-pointer">
+              <div className="w-[31px] h-[31px] absolute border-[1px] z-0 border-dotted border-bluegray hover:scale-75 transition-transform duration-300"></div>
               <img
-                src={ArrowButton}
+                src={Arrow}
                 alt="Arrow button"
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300 cursor-pointer"
+                className="w-[9.43px] h-[10.89px] object-cover rotate-[-45deg] z-0"
               />
             </div>
           </Link>

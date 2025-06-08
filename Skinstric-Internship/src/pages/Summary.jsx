@@ -1,7 +1,7 @@
 import ArrowButton from "../assets/ArrowButton.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const Summary = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,17 +14,51 @@ const Summary = () => {
   const [activeGender, setActiveGender] = useState({});
   const [demoData, setDemoData] = useState({});
   const location = useLocation();
+  const raceRef = useRef(null);
+  const ageRef = useRef(null);
+  const genderRef = useRef(null);
+
+  useEffect(() => {
+    if (raceRef.current && SelectedOption === "RACE") {
+      gsap.to(raceRef.current, {
+        "--progress": `${activeRace.percent * 360}deg`,
+        duration: 2,
+        ease: "power2.out",
+      });
+    }
+  }, [activeRace.percent, SelectedOption]);
+
+  useEffect(() => {
+    if (ageRef.current && SelectedOption === "AGE") {
+      gsap.to(ageRef.current, {
+        "--progress": `${activeAge.percent * 360}deg`,
+        duration: 2,
+        ease: "power2.out",
+      });
+    }
+  }, [activeAge.percent, SelectedOption]);
+
+  useEffect(() => {
+    if (genderRef.current && SelectedOption === "GENDER") {
+      gsap.to(genderRef.current, {
+        "--progress": `${activeGender.percent * 360}deg`,
+        duration: 2,
+        ease: "power2.out",
+      });
+    }
+  }, [activeGender.percent, SelectedOption]);
 
   useEffect(() => {
     const { userdata } = location.state || {};
     setDemoData(userdata);
-    console.log(userdata);
   }, []);
+
   useEffect(() => {
     if (Object.keys(demoData).length > 0) {
       setInitialData();
     }
   }, [demoData]);
+
   const setInitialData = () => {
     const highestRace = Object.entries(demoData.race).reduce(
       (max, [raceGroup, value]) => {
@@ -140,11 +174,11 @@ const Summary = () => {
                   <div className="absolute right-4 bottom-6">
                     <div className="relative w-[384px] h-[384px]">
                       <div
+                        ref={raceRef}
                         className="absolute inset-0 rounded-full"
                         style={{
-                          background: `conic-gradient(#1A1B1C ${
-                            activeRace.percent * 360
-                          }deg, #C1C2C3 0deg)`,
+                          "--progress": `${activeRace.percent * 360}deg`,
+                          background: `conic-gradient(#1A1B1C var(--progress), #C1C2C3 0deg)`,
                         }}
                       ></div>
                       <div className="absolute inset-[3px] bg-antiflash rounded-full"></div>
@@ -164,11 +198,11 @@ const Summary = () => {
                   <div className="absolute right-4 bottom-6">
                     <div className="relative w-[384px] h-[384px]">
                       <div
+                        ref={ageRef}
                         className="absolute inset-0 rounded-full"
                         style={{
-                          background: `conic-gradient(#1A1B1C ${
-                            activeAge.percent * 360
-                          }deg, #C1C2C3 0deg)`,
+                          "--progress": `${activeAge.percent * 360}deg`,
+                          background: `conic-gradient(#1A1B1C var(--progress), #C1C2C3 0deg)`,
                         }}
                       ></div>
                       <div className="absolute inset-[3px] bg-antiflash rounded-full"></div>
@@ -188,11 +222,11 @@ const Summary = () => {
                   <div className="absolute right-4 bottom-6">
                     <div className="relative w-[384px] h-[384px]">
                       <div
+                        ref={genderRef}
                         className="absolute inset-0 rounded-full"
                         style={{
-                          background: `conic-gradient(#1A1B1C ${
-                            activeGender.percent * 360
-                          }deg, #C1C2C3 0deg)`,
+                          "--progress": `${activeGender.percent * 360}deg`,
+                          background: `conic-gradient(#1A1B1C var(--progress), #C1C2C3 0deg)`,
                         }}
                       ></div>
                       <div className="absolute inset-[3px] bg-antiflash rounded-full"></div>
@@ -222,23 +256,47 @@ const Summary = () => {
                     <div
                       key={race}
                       onClick={() => {
-                        setactiveRace({ race: race, percent: value })
-                        setSelectedRace(race)
+                        setactiveRace({ race: race, percent: value });
+                        setSelectedRace(race);
                       }}
                       className={`p-4 h-[48px] flex justify-between items-center cursor-pointer  
-                        ${selectedRace === race ? "bg-black" : "hover:bg-lotion-hover"}`}
+                        ${
+                          selectedRace === race
+                            ? "bg-black"
+                            : "hover:bg-lotion-hover"
+                        }`}
                     >
                       <div className="flex items-center">
-                        <div className={`w-[8.49px] h-[8.49px] border-[1px]  rotate-45 mr-3 flex justify-center items-center 
-                          ${selectedRace === race ? "border-white" : "border-black"}`}>
-                          <div className={`w-[4.24px] h-[4.24px] ${selectedRace === race && "bg-white"}`}></div>
+                        <div
+                          className={`w-[8.49px] h-[8.49px] border-[1px]  rotate-45 mr-3 flex justify-center items-center 
+                          ${
+                            selectedRace === race
+                              ? "border-white"
+                              : "border-black"
+                          }`}
+                        >
+                          <div
+                            className={`w-[4.24px] h-[4.24px] ${
+                              selectedRace === race && "bg-white"
+                            }`}
+                          ></div>
                         </div>
-                        <p className={`capitalize font-roobert text-[16px] ${selectedRace === race ? "text-white" : "text-eerie"}`}>
+                        <p
+                          className={`capitalize font-roobert text-[16px] ${
+                            selectedRace === race ? "text-white" : "text-eerie"
+                          }`}
+                        >
                           {race}
                         </p>
                       </div>
 
-                      <p className={`${selectedRace === race ? "text-white" : "text-eerie"}`}>{(value * 100).toFixed(0)} %</p>
+                      <p
+                        className={`${
+                          selectedRace === race ? "text-white" : "text-eerie"
+                        }`}
+                      >
+                        {(value * 100).toFixed(0)} %
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -254,23 +312,47 @@ const Summary = () => {
                     <div
                       key={age}
                       onClick={() => {
-                        setActiveAge({ age: age, percent: value })
-                        setSelectedAge(age)
+                        setActiveAge({ age: age, percent: value });
+                        setSelectedAge(age);
                       }}
                       className={`p-4 h-[48px] flex justify-between items-center cursor-pointer  
-                        ${selectedAge === age ? "bg-black" : "hover:bg-lotion-hover"}`}
+                        ${
+                          selectedAge === age
+                            ? "bg-black"
+                            : "hover:bg-lotion-hover"
+                        }`}
                     >
                       <div className="flex items-center">
-                        <div className={`w-[8.49px] h-[8.49px] border-[1px]  rotate-45 mr-3 flex justify-center items-center 
-                          ${selectedAge === age ? "border-white" : "border-black"}`}>
-                          <div className={`w-[4.24px] h-[4.24px] ${selectedAge === age && "bg-white"}`}></div>
+                        <div
+                          className={`w-[8.49px] h-[8.49px] border-[1px]  rotate-45 mr-3 flex justify-center items-center 
+                          ${
+                            selectedAge === age
+                              ? "border-white"
+                              : "border-black"
+                          }`}
+                        >
+                          <div
+                            className={`w-[4.24px] h-[4.24px] ${
+                              selectedAge === age && "bg-white"
+                            }`}
+                          ></div>
                         </div>
-                        <p className={`capitalize font-roobert text-[16px] ${selectedAge === age ? "text-white" : "text-eerie"}`}>
+                        <p
+                          className={`capitalize font-roobert text-[16px] ${
+                            selectedAge === age ? "text-white" : "text-eerie"
+                          }`}
+                        >
                           {age}
                         </p>
                       </div>
 
-                      <p className={`${selectedAge === age ? "text-white" : "text-eerie"}`}>{(value * 100).toFixed(0)} %</p>
+                      <p
+                        className={`${
+                          selectedAge === age ? "text-white" : "text-eerie"
+                        }`}
+                      >
+                        {(value * 100).toFixed(0)} %
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -286,23 +368,51 @@ const Summary = () => {
                     <div
                       key={gender}
                       onClick={() => {
-                        setActiveGender({ gender: gender, percent: value })
-                        setSelectedGender(gender)
+                        setActiveGender({ gender: gender, percent: value });
+                        setSelectedGender(gender);
                       }}
                       className={`p-4 h-[48px] flex justify-between items-center cursor-pointer  
-                        ${selectedGender === gender ? "bg-black" : "hover:bg-lotion-hover"}`}
+                        ${
+                          selectedGender === gender
+                            ? "bg-black"
+                            : "hover:bg-lotion-hover"
+                        }`}
                     >
                       <div className="flex items-center">
-                        <div className={`w-[8.49px] h-[8.49px] border-[1px]  rotate-45 mr-3 flex justify-center items-center 
-                          ${selectedGender === gender ? "border-white" : "border-black"}`}>
-                          <div className={`w-[4.24px] h-[4.24px] ${selectedGender === gender && "bg-white"}`}></div>
+                        <div
+                          className={`w-[8.49px] h-[8.49px] border-[1px]  rotate-45 mr-3 flex justify-center items-center 
+                          ${
+                            selectedGender === gender
+                              ? "border-white"
+                              : "border-black"
+                          }`}
+                        >
+                          <div
+                            className={`w-[4.24px] h-[4.24px] ${
+                              selectedGender === gender && "bg-white"
+                            }`}
+                          ></div>
                         </div>
-                        <p className={`capitalize font-roobert text-[16px] ${selectedGender === gender ? "text-white" : "text-eerie"}`}>
+                        <p
+                          className={`capitalize font-roobert text-[16px] ${
+                            selectedGender === gender
+                              ? "text-white"
+                              : "text-eerie"
+                          }`}
+                        >
                           {gender}
                         </p>
                       </div>
 
-                      <p className={`${selectedGender === gender ? "text-white" : "text-eerie"}`}>{(value * 100).toFixed(0)} %</p>
+                      <p
+                        className={`${
+                          selectedGender === gender
+                            ? "text-white"
+                            : "text-eerie"
+                        }`}
+                      >
+                        {(value * 100).toFixed(0)} %
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -324,6 +434,15 @@ const Summary = () => {
 
           <p className="roobert-font text-[14px]">BACK</p>
         </div>
+
+        <div className="absolute bottom-8">
+          <p className="font-roobert text-[16px] text-bluegray">If A.I. estimate is wrong, select the correct one.</p>
+        </div>
+        <div className="flex absolute bottom-8 right-8">
+          <button onClick={() => setInitialData()} className="font-roobert font-bold border-black border-[1px] py-1 px-4 mr-4">RESET</button>
+          <button className="font-roobert font-bold text-white bg-black py-1 px-4 cursor-not-allowed">CONFIRM</button>
+        </div>
+
       </div>
     </div>
   );
