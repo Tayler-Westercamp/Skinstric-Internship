@@ -21,6 +21,9 @@ export default {
           DEFAULT: "#FCFCFC",
           hover: "#E1E1E2",
         },
+        antiflash: {
+          DEFAULT: "#F3F3F4",
+        },
       },
        keyframes: {
         dotFlash: {
