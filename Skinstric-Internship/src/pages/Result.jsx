@@ -11,6 +11,7 @@ const Result = () => {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const [cameraMenu, setCameraMenu] = useState(false)
 
   useEffect(() => {
     if (selectedFile !== "") {
@@ -182,14 +183,24 @@ const Result = () => {
                 className="w-[340.75px] h-[340.75px] border-2 border-dotted border-bluegray-40 absolute rotate-45 z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
               ></div>
               <div className="w-[136px] h-[136px] z-10">
-                <Link to={"/"}>
                   <img
+                  onClick={() => setCameraMenu(true)}
                     src={camera}
                     alt=""
                     className="w-full h-full hover:scale-105 transition-transform duration-300 cursor-pointer z-10"
                   />
-                </Link>
               </div>
+              {cameraMenu && (<div className="absolute w-full h-full max-w-[352px] max-h-[136px] bg-black right-[-220px] bottom-[140px] ">
+                <div className=" h-[101px] ">
+                  <p className="font-roobert text-white font-bold p-4">ALLOW A.I. TO ACCESS YOUR CAMERA</p>
+                  
+                </div>
+                <div className="flex justify-end border-white border-t-[1px]">
+                  <button onClick={() => setCameraMenu(false)} className="text-white py-1 px-5 hover:font-bold">DENY</button>
+                  <button onClick={() => navigate("/camera")} className="text-white py-1 px-5 hover:font-bold">ALLOW</button>
+                </div>
+              </div>)}
+              
             </div>
             <div className="w-[482px] h-[482px] flex items-center justify-center relative">
               <div className="absolute bottom-[135px] left-[145px]">
